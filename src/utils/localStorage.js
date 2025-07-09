@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
 
-// Save a task for a specific user
 export const addAsync = async (task, contactNumber) => {
   if (task.trim() === '') {
     Alert.alert('Alert', 'Task cannot be empty');
@@ -13,7 +12,7 @@ export const addAsync = async (task, contactNumber) => {
     const existingTasks = await AsyncStorage.getItem(key);
     const tasks = existingTasks ? JSON.parse(existingTasks) : [];
 
-    const updatedTasks = [...tasks, task]; // or [task, ...tasks] if you want reverse order
+    const updatedTasks = [...tasks, task]; // or [task, ...tasks] for reverse order
     await AsyncStorage.setItem(key, JSON.stringify(updatedTasks));
 
     return true;
@@ -23,7 +22,6 @@ export const addAsync = async (task, contactNumber) => {
   }
 };
 
-// Get tasks for a specific user
 export const getAsync = async (contactNumber) => {
   try {
     const key = `tasks_${contactNumber}`;
@@ -36,7 +34,6 @@ export const getAsync = async (contactNumber) => {
   }
 };
 
-// Remove a task by index for a specific user
 export const removeTask = async (taskIndex, contactNumber) => {
   try {
     const key = `tasks_${contactNumber}`;

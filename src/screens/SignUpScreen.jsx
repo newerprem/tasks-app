@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createAccount, clearErrors } from '../redux/authSlice';
@@ -21,14 +21,15 @@ export default function SignUpScreen() {
 
   const handleSignUp = () => {
     if (!isPasswordValid(password)) {
-      return alert("Password must be 8+ characters, include 1 number and 1 special character");
+      return Alert.alert("Password must be 8+ characters, include 1 number and 1 special character");
     }
     dispatch(createAccount({ contactNumber, password }));
   };
 
   useEffect(() => {
     if (accountAlreadyExist) {
-      alert("Account already exists.");
+      Alert.alert("Account already exists.");
+      dispatch(clearErrors())
     }
   }, [accountAlreadyExist]);
 
@@ -38,6 +39,7 @@ export default function SignUpScreen() {
         placeholder="Contact Number"
         style={styles.input}
         keyboardType="phone-pad"
+        maxLength={10}
         value={contactNumber}
         onChangeText={setContactNumber}
       />

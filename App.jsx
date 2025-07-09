@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import StackNavigator from './src/navigation/StackNavigator';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
@@ -10,11 +10,19 @@ import AppNavigator from './src/navigation/AppNavigator';
 function App() {
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+      <PersistGate
+        loading={
+          // <View
+          //   style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+          // >
+          //   <ActivityIndicator size="large" color="blue" />
+          // </View>
+          null
+        }
+        persistor={persistor}
+      >
         <SafeAreaProvider style={styles.container}>
-          {/* <NavigationContainer>
-            <StackNavigator />
-          </NavigationContainer> */}
+
           <AppNavigator />
         </SafeAreaProvider>
       </PersistGate>

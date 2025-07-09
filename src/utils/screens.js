@@ -3,5 +3,6 @@ export const screens = {
     ADD_TASK_SCREEN: "Add Task Screen",
     VIEW_TASK_SCREEN: "View Task Screen",
     LOGIN_SCREEN: "Login Screen",
-    SIGNUP_SCREEN: "SignUp Screen"
+    SIGNUP_SCREEN: "SignUp Screen",
+    PROFILE_SCREEN: "Profile Screen"
 }

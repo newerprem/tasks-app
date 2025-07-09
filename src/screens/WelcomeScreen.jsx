@@ -15,6 +15,7 @@ export default function WelcomeScreen({ navigation }) {
   const navigateToViewTask = () => {
     navigation.navigate(screens["VIEW_TASK_SCREEN"]);
   };
+
   return (
     <View style={styles.container}>
       <PrimaryButton text={strings["addTask"]} onPress={navigateToAddTask} />

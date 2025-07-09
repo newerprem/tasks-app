@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, clearErrors } from '../redux/authSlice';
@@ -16,19 +23,22 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const { loginError } = useSelector(state => state.auth);
+  const loginError = useSelector(state => state.auth.loginError);
 
   const handleLogin = () => {
-    if(contactNumber.length>=10) {
-        dispatch(login({ contactNumber, password }));
+    if (contactNumber.length != 10) {
+      Alert.alert('Phone number must be exactly 10 digits.');
+    } else if (password.length < 8) {
+      Alert.alert('Password must be 8 or more characters long.');
     } else {
-        Alert.alert("Phone number must be exactly 10 digits.")
+      dispatch(login({ contactNumber, password }));
     }
   };
 
   useEffect(() => {
     if (loginError) {
-      Alert.alert("Invalid contact number or password.");
+      Alert.alert('Wrong credentials');
+      dispatch(clearErrors())
     }
   }, [loginError]);
 
@@ -39,6 +49,7 @@ export default function LoginScreen() {
         style={styles.input}
         keyboardType="phone-pad"
         value={contactNumber}
+        maxLength={10}
         onChangeText={setContactNumber}
       />
 
@@ -59,13 +70,13 @@ export default function LoginScreen() {
         </TouchableOpacity>
       </View>
 
-      <PrimaryButton text={strings["LOGIN"]} onPress={handleLogin} />
+      <PrimaryButton text={strings['LOGIN']} onPress={handleLogin} />
 
       <PrimaryButton
-        text={strings["DO_NOT_HAVE_AN_ACCOUNT"]}
+        text={strings['DO_NOT_HAVE_AN_ACCOUNT']}
         onPress={() => {
           dispatch(clearErrors());
-          navigation.replace(screens["SIGNUP_SCREEN"]);
+          navigation.replace(screens['SIGNUP_SCREEN']);
         }}
         backgroundColor={colors.white}
         fontColor={colors.rootColor}

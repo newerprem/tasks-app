@@ -8,45 +8,47 @@ import { strings } from '../utils/strings';
 import { colors } from '../utils/colors';
 import { screens } from '../utils/screens';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/authSlice';
+import { useNavigation } from '@react-navigation/native';
+import ProfileScreen from '../screens/ProfileScreen';
+import { getFirstName } from '../utils/helper';
 
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
-  const dispatch = useDispatch()
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const fullName = useSelector(state => state.auth.name) || "User"
+  const welcomeHeader = "Welcome " + getFirstName(fullName)
   const handleLogout = () => {
-      Alert.alert(
-            "Log out",
-            "You will be logged out of your account.",
-            [
-              {
-                text: "Cancel",
-                style: "cancel",
-              },
-              {
-                text: "Log Out",
-                style: "destructive",
-                onPress: async () => {
-                  dispatch(logout())
-                }
-              },
-            ]
-          )
-    }
+    Alert.alert('Log out', 'You will be logged out of your account.', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      {
+        text: 'Log Out',
+        style: 'destructive',
+        onPress: async () => {
+          dispatch(logout());
+        },
+      },
+    ]);
+  };
   return (
     <Stack.Navigator>
       <Stack.Screen
         name={screens['WELCOME_SCREEN']}
         component={Welcome}
         options={{
-          ...getHeaderOptions(screens['WELCOME_SCREEN']),
+          ...getHeaderOptions(welcomeHeader),
           headerRight: () => (
             <TouchableOpacity
-              onPress={() => handleLogout()}
+              onPress={() => navigation.navigate(screens['PROFILE_SCREEN'])}
               style={{ marginRight: 16 }}
             >
-              <Icon name="sign-out" size={20} color={colors.white} />
+              <Icon name="user-circle" size={20} color={colors.white} />
             </TouchableOpacity>
           ),
         }}
@@ -60,6 +62,21 @@ const StackNavigator = () => {
         name={screens['VIEW_TASK_SCREEN']}
         component={ViewTask}
         options={getHeaderOptions(screens['VIEW_TASK_SCREEN'])}
+      />
+      <Stack.Screen
+        name={screens['PROFILE_SCREEN']}
+        component={ProfileScreen}
+        options={{
+          ...getHeaderOptions(screens['PROFILE_SCREEN']),
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => dispatch(()=> handleLogout())}
+              style={{ marginRight: 16 }}
+            >
+              <Icon name="sign-out" size={20} color={colors.white} />
+            </TouchableOpacity>
+          ),
+        }}
       />
     </Stack.Navigator>
   );
