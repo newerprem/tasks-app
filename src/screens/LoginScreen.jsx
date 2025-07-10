@@ -37,7 +37,7 @@ export default function LoginScreen() {
 
   useEffect(() => {
     if (loginError) {
-      Alert.alert('Wrong credentials');
+      Alert.alert('Account not found');
       dispatch(clearErrors())
     }
   }, [loginError]);

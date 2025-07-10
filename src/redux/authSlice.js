@@ -11,6 +11,7 @@ const authSlice = createSlice({
     users: [],
     name: '',
     email: '',
+    profilePic: '../assets/person.png'
   },
   reducers: {
     createAccount: (state, action) => {
@@ -47,6 +48,7 @@ const authSlice = createSlice({
         state.loginError = false;
         state.name = userFound.name;
         state.email = userFound.email;
+        state.profilePic = userFound.profilePic
       } else {
         state.loginError = true;
       }
@@ -65,6 +67,17 @@ const authSlice = createSlice({
       state.email = email.trim();
     },
 
+    changeProfilePic : (state, action) => {
+        const {profilePic} = action.payload;
+        const currentUser = state.users.find(
+            user => user.contactNumber === state.contactNumber
+        );
+        if(currentUser) {
+            currentUser.profilePic = profilePic
+        }
+        state.profilePic = profilePic
+    },
+
     logout: state => {
       state.isLoggedIn = false;
       state.contactNumber = null;
@@ -72,6 +85,7 @@ const authSlice = createSlice({
       state.loginError = false;
       state.name = '',
       state.email = ''
+      state.profilePic = '../assets/person.png'
     },
 
     clearErrors: state => {
@@ -81,6 +95,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { createAccount, login, updateDetails, logout, clearErrors } =
+export const { createAccount, login, updateDetails, logout, clearErrors, changeProfilePic } =
   authSlice.actions;
 export default authSlice.reducer;
